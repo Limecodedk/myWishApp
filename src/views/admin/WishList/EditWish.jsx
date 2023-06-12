@@ -12,13 +12,14 @@ const EditWish = () => {
   //init request-hook
   const { data, isLoading, error, makeRequest } = useRequestData()
   const { data: dataWish, isLoading: isLoadingWish, error: errorWish, makeRequest: makeRequestWish } = useRequestData()
+  const { data: dataUser, isLoading: isLoadingUser, error: errorUser, makeRequest: makeRequestUser } = useRequestData()
 
   const [title, setTitle] = useState()
   const [description, setDescription] = useState()
   const [link, setLink] = useState()
   const [image, setImage] = useState()
   const [wishGategorie, setWishGategorie] = useState()
-
+  const [wishUser, setWishUser] = useState()
 
   useEffect(() => {
 
@@ -33,6 +34,11 @@ const EditWish = () => {
       { "Authorization": "Bearer " + process.env.REACT_APP_WishList, "Content-Type": "application/json" }
     )
 
+    //Hent Hvem der ønsker sig
+    makeRequestUser("https://api.airtable.com/v0/appKD8PbhWfK371me/User?sort%5B0%5D%5Bfield%5D=Name",
+      { "Authorization": "Bearer " + process.env.REACT_APP_WishList, "Content-Type": "application/json" }
+    )
+
   }, []);
 
 
@@ -44,6 +50,7 @@ const EditWish = () => {
       setLink(data.fields.Link)
       setImage(data.fields.Images)
       setWishGategorie(data.fields.categorie[0])
+      setWishUser(data.fields.User)
     }
   }, [data])
 
@@ -51,7 +58,7 @@ const EditWish = () => {
   const handleSubmit = e => {
     e.preventDefault();
 
-    makeRequest("https://api.airtable.com/v0/appKD8PbhWfK371me/Wish" + id,
+    makeRequest("https://api.airtable.com/v0/appKD8PbhWfK371me/Wish/" + id,
       {
         "Authorization": "Bearer " + process.env.REACT_APP_WishList,
         "Content-Type": "application/json"
@@ -64,6 +71,9 @@ const EditWish = () => {
           "Images": image,
           "categorie": [
             wishGategorie
+          ],
+          "User": [
+            wishUser
           ]
         }
       })
@@ -71,7 +81,7 @@ const EditWish = () => {
 
   return (
     <>
-      <h1>Ret Ønskeliste - ID: {id}</h1>
+      <h1>Ret Ønskeliste - {title}</h1>
       {isLoading && <Loader />}
 
       {error && <Error error={error} />}
@@ -84,6 +94,13 @@ const EditWish = () => {
         <select onChange={e => setWishGategorie(e.target.value)} value={wishGategorie ? wishGategorie : "DEFAULT"}>
           <option value="DEFAULT" disabled>Vælg en kategori</option>
           {dataWish && dataWish.records.map(s =>
+            <option key={s.id} value={s.id} >{s.fields.Name}</option>
+          )
+          }
+        </select>
+        <select onChange={e => setWishUser(e.target.value)} value={wishUser ? wishUser : "DEFAULT"}>
+          <option value="DEFAULT" disabled>Hvem ønsker sig</option>
+          {dataUser && dataUser.records.map(s =>
             <option key={s.id} value={s.id} >{s.fields.Name}</option>
           )
           }

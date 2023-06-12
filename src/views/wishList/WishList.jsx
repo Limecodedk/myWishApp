@@ -34,6 +34,7 @@ const WishList = () => {
                   <th>Beskrivelse:</th>
                   <th>Link</th>
                   <th>Billede:</th>
+                  <th>Ønskes af:</th>
                 </tr>
               </thead>
               <tbody>
@@ -45,6 +46,8 @@ const WishList = () => {
                   {
                     s.fields.Images && <td ><img src={s.fields.Images} alt="" width={'150px'} height={'100px'} /></td>
                   }
+
+                  <td>{s.fields.Name}</td>
 
                 </tr>
               </tbody>

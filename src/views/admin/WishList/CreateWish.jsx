@@ -9,18 +9,24 @@ const CreateWish = () => {
   //init request-hook
   const { data, isLoading, error, makeRequest } = useRequestData()
   const { data: dataWish, isLoading: isLoadingWish, error: errorWish, makeRequest: makeRequestWish } = useRequestData()
+  const { data: dataUser, isLoading: isLoadingUser, error: errorUser, makeRequest: makeRequestUser } = useRequestData()
 
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [link, setLink] = useState('')
   const [image, setImage] = useState('')
   const [wishGategorie, setWishGategorie] = useState('')
+  const [wishUser, setWishUser] = useState('')
 
 
 
   useEffect(() => {
 
     makeRequestWish("https://api.airtable.com/v0/appKD8PbhWfK371me/categorie?sort%5B0%5D%5Bfield%5D=Name",
+      { "Authorization": "Bearer " + process.env.REACT_APP_WishList, "Content-Type": "application/json" }
+    )
+
+    makeRequestUser("https://api.airtable.com/v0/appKD8PbhWfK371me/user?sort%5B0%5D%5Bfield%5D=Name",
       { "Authorization": "Bearer " + process.env.REACT_APP_WishList, "Content-Type": "application/json" }
     )
 
@@ -42,6 +48,9 @@ const CreateWish = () => {
           "Images": image,
           "categorie": [
             wishGategorie
+          ],
+          "User": [
+            wishUser
           ]
         }
       })
@@ -68,6 +77,15 @@ const CreateWish = () => {
           )
           }
         </select>
+
+        <select onChange={e => setWishUser(e.target.value)} defaultValue="DEFAULT">
+          <option value="DEFAULT" disabled>Hvem ønsker sig?</option>
+          {dataUser && dataUser.records.map(s =>
+            <option key={s.id} value={s.id} >{s.fields.Name}</option>
+          )
+          }
+        </select>
+
         <button type='submit'>Opret Ønske</button>
       </form>
       {
