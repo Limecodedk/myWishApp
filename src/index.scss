@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Geologica:wght@500&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+.hero {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr)
+}
+
+.hero-bg {
+  grid-column: 1/-1;
+  grid-row: 1/-1;
+}
+
+.hero-logo {
+  grid-column: 1/2;
+  grid-row: 1/-1;
+  width: 250px;
+  margin: 30px;
+}
+
+.hero-text {
+  grid-column: 2/-1;
+  grid-row: 1/-1;
+  align-self: center;
+  justify-content: center;
+  margin-left: 5em;
+
+  h2 {
+    color: black;
+    margin-bottom: 10px;
+  }
+}
+
+.logo {
+  width: 250px;
+  margin-top: 30px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 5px 10px;
+  border: 1px solid blue;
+  margin-top: 10px;
+}
+
+.aboutsection {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  .content {
+    align-self: center;
+    padding: 0 30px;
+  }
+}
+
+.countersection {
+  display: flexbox;
+  justify-content: center;
+  text-align: center;
+  background-color: #8fd8df;
+  color: black;
+  padding-top: 25px;
+
+  h2 {
+    color: black;
+  }
+
+  img {
+    height: 500px;
+  }
+}
+
+
+.copyright {
+  text-align: center;
+}
